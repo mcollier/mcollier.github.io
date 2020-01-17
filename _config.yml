@@ -29,8 +29,11 @@ github_username:  mcollier
 
 # Build settings
 theme: minima
+#theme: jekyll-theme-architect
 plugins:
   - jekyll-feed
+
+google_analytics: UA-156433646-1
 
 # Exclude from processing.
 # The following items will not be processed, by default.
