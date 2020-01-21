@@ -165,7 +165,7 @@ In order to restrict access to an Azure Function to a specified virtual network,
 
 In this blog post, an Azure VM was used to demonstrate triggering the Azure Function. An alternative implementation could have easily been another Azure Function deployed to an Azure Function Premium plan with virtual network integration, or App Service Environment (ASE). The VM was used for simplicity in demonstrating the concept.
 
-Thanks to Thiago Almeida and Alex Karcher for their assistance in reviewing this blog post.
+Thanks to [Thiago Almeida](https://twitter.com/nzthiago) and [Alex Karcher](https://twitter.com/AlexKarcher) for their assistance in reviewing this blog post.
 
 ## Resources
 
