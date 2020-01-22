@@ -1,14 +1,16 @@
 ---
 layout: post
 title:  "Azure Functions Private Site Access"
-date:   2020-01-21 13:39:00 -0500
+date:   2020-01-22 09:00:00 -0500
 categories: [azure-functions]
+description: A blog post demonstrating how to set up private site access with Azure Functions.
 tags: [azure-functions, networking, virtual-network, azure-bastion]
 ---
 
-This blog post will demonstrate how to create an [Azure Function with private site access](https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access). Private site access refers to a way for resources within a virtual network to reach out to an Azure Function.  Configuring private site access ensures that the specified Azure Function is not able to be triggered via the public internet. Instead, the function can only be accessed via a specific virtual network. The Function is private to the specified virtual network.
+This post will demonstrate how to create an [Azure Function with private site access](https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access). Private site access refers to a way for resources within a virtual network to reach out to an Azure Function.  Configuring private site access ensures that the specified Azure Function is not able to be triggered via the public internet. Instead, the function can only be accessed via a specific virtual network. The function is private to the specified virtual network.
 
 <!--more-->
+
 If the Azure Function needs to reach in to a virtual network to interact with resources either in the virtual network or connected via service endpoints, then virtual network integration is needed. This blog post focuses on the private site access. To view a tutorial on virtual network integration, please refer to [https://docs.microsoft.com/azure/azure-functions/functions-create-vnet](https://docs.microsoft.com/azure/azure-functions/functions-create-vnet).
 
 Over the course of this blog post, the following steps will be demonstrated in order to configure private site access for an Azure Function:
@@ -23,7 +25,7 @@ Over the course of this blog post, the following steps will be demonstrated in o
 
 The following diagram shows the high-level architecture of the solution to be created:
 
-![Architecture overview](/assets/2020-01-21-azure-functions-private-site-access/architecture-overview.jpeg)
+![Architecture overview](/assets/azure-functions-private-site-access/architecture-overview.jpeg)
 
 To learn more about Azure Functions networking options, please refer to [https://docs.microsoft.com/azure/azure-functions/functions-networking-options](https://docs.microsoft.com/azure/azure-functions/functions-networking-options).
 
@@ -31,7 +33,7 @@ To learn more about Azure Functions networking options, please refer to [https:/
 
 The first step is to create a new resource group, and then a new virtual network within the resource group. The virtual network will contain one subnet (with a name of "default"), and a new virtual machine within that subnet. The VM will be used to test invoking the function app. For the purposes of this blog post, the default virtual network settings will be sufficient.
 
-![Create a virtual network](/assets/2020-01-21-azure-functions-private-site-access/create-vnet.png)
+![Create a virtual network](/assets/azure-functions-private-site-access/create-vnet.png)
 
 With the virtual network, including a default subnet, in place, it is now time to put a resource in the virtual network. A new virtual machine will be created within the "default" subnet of the virtual network.
 
@@ -39,15 +41,15 @@ With the virtual network, including a default subnet, in place, it is now time t
 
 Next, create a new Windows Server 2019 Datacenter virtual machine via the Azure Portal. Microsoft provides a [quickstart on creating a VM](https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal) which outlines the basic steps for creating a VM. Below are a few additional details related to virtual network configuration, which isn\'t shown in the quickstart documentation.
 
-Note -- I'm using a Windows VM in this blog post, but a Linux VM could be used too. I'm just more familiar with Windows.
+> Note -- I'm using a Windows VM in this blog post, but a Linux VM could be used too. I'm just more familiar with Windows.
 
 1. In the **Basics** tab, keep the default settings to keep things simple for this blog post.
-![Create a VM - Basics](/assets/2020-01-21-azure-functions-private-site-access/create-vm-basics.png)
+![Create a VM - Basics](/assets/azure-functions-private-site-access/create-vm-basics.png)
 2. Leave the defaults in the **Disk** tab.
 3. In the **Networking** tab, select the previously created virtual network and subnet. For this blog post, one change to make from the defaults is to *not* have a public IP address. Remote access to the VM will be configured later via the Azure Bastion service. In many enterprises, this virtual network would often be connected to an on-premises network via Express Route or a site/point-to-site VPN connection.
-![Create a VM - Networking](/assets/2020-01-21-azure-functions-private-site-access/create-vm-networking.png)
+![Create a VM - Networking](/assets/azure-functions-private-site-access/create-vm-networking.png)
 4. In the **Management** tab, leave most of the defaults in place. For the purposes of this blog, I'll change the auto-shutdown time to 6:00pm Eastern (as that is when I'm normally done with my day).
-![Create a VM - Management](/assets/2020-01-21-azure-functions-private-site-access/create-vm-management.png)
+![Create a VM - Management](/assets/azure-functions-private-site-access/create-vm-management.png)
 5. Leave the defaults in place for the **Advanced** and **Tags** tabs.
 6. On the **Review + create** tab, the platform will perform some basic validation. Assuming the validation completes without error, it's time to press the Create button. It'll take a few minutes for the VM to be created.
 
@@ -57,7 +59,7 @@ Azure Bastion is a fully-managed Azure service which provides secure RDP and SSH
 
 To configure the Azure Bastion service, follow the instructions at [https://docs.microsoft.com/azure/bastion/bastion-create-host-portal](https://docs.microsoft.com/azure/bastion/bastion-create-host-portal).  Creating an Azure Bastion service is relatively straight-forward, as can be seen in the screenshot below.
 
-![Create Azure Bastion service](/assets/2020-01-21-azure-functions-private-site-access/create-bastion.png)
+![Create Azure Bastion service](/assets/azure-functions-private-site-access/create-bastion.png)
 
 ## Create an Azure Function App
 
@@ -74,7 +76,7 @@ It is also beneficial to create an Application Insights resource to go along wit
 
 Below is screenshot of the configuration settings used.
 
-![Function App - Review and Create](/assets/2020-01-21-azure-functions-private-site-access/function-app-review-create.png)
+![Function App - Review and Create](/assets/azure-functions-private-site-access/function-app-review-create.png)
 
 With the function app in place, the next step is to configure access restrictions to ensure only resources on the virtual network can invoke the function.
 
@@ -84,45 +86,45 @@ With the function app in place, the next step is to configure access restriction
 
 Within the function app, proceed to the **Platform features** tab. Note that in the screenshot below, while there is a function app, there are no functions.
 
-![Functions - Platform Overview](/assets/2020-01-21-azure-functions-private-site-access/functions-platform-overview.png)
+![Functions - Platform Overview](/assets/azure-functions-private-site-access/functions-platform-overview.png)
 
 Click on **Networking** to open the **Network Feature Status** section.  This page is the starting point to configure Azure Front Door, the Azure CDN, and also Access Restrictions. Private site access is configured via access restrictions. Click to **Configure Access Restrictions**.
 
-![Functions - Network Features Status](/assets/2020-01-21-azure-functions-private-site-access/functions-network-feature-status.png)
+![Functions - Network Features Status](/assets/azure-functions-private-site-access/functions-network-feature-status.png)
 
 It can be seen on the Access Restrictions page that there are no restrictions in place. Well, there is a default which is to allow everything. For private site access, a new access restriction configuration needs to be created. Do so by first clicking on **Add rule**.
 
-![Functions - Default Access Restrictions](/assets/2020-01-21-azure-functions-private-site-access/functions-access-restrictions-default.png)
+![Functions - Default Access Restrictions](/assets/azure-functions-private-site-access/functions-access-restrictions-default.png)
 
 This will open new **Add Access Restriction** blade on the right side of the portal. The key configuration in this blade is to select **Virtual Network** from the Type drop-down selection box. Once Virtual Network is selected, select the desired virtual network and subnet.
 
-![Functions - Add Access Restrictions](/assets/2020-01-21-azure-functions-private-site-access/functions-add-access-restrictions.png)
+![Functions - Add Access Restrictions](/assets/azure-functions-private-site-access/functions-add-access-restrictions.png)
 
 Notice in the above screenshot the information block indicating a service endpoint has not yet been enabled for Microsoft.Web. The service endpoint will automatically be created. In my experience, enabling the service endpoint normally takes a few seconds, not 15 minutes . . . but it is good to have that buffer.
 
-![Functions - Add service endpoint status message](/assets/2020-01-21-azure-functions-private-site-access/add-service-endpoint-status-message.png)
+![Functions - Add service endpoint status message](/assets/azure-functions-private-site-access/add-service-endpoint-status-message.png)
 
 The Access Restrictions page now shows that there is a new restriction.  It may take a few seconds for the Endpoint status to change from Provisioning to Enabled.
 
-![Functions - Access Restrictions Rule](/assets/2020-01-21-azure-functions-private-site-access/functions-access-restrictions-rule.png)
+![Functions - Access Restrictions Rule](/assets/azure-functions-private-site-access/functions-access-restrictions-rule.png)
 
 It is important to note that access restrictions have not been enabled on the SCM site, private-site.scm.azurewebsites.net. By not enabling access restrictions the SCM site, it will be possible to deploy the Azure Function code from a local developer workstation or another build service without needing to take extra steps to provision an agent within the virtual network.
 
 Once the access restriction is in place, you will notice a warning at the top of the Azure Function app page - \"*Access restrictions have been added to your function app. This may affect your ability to manage it from the portal and make the runtime unreachable.\"* At first this may be a little worrisome, but it makes sense. A rule has been created which indicates the function(s) should not be accessible from the public internet, but only the designated virtual network.
 
-![Functions - access restrictions warning](/assets/2020-01-21-azure-functions-private-site-access/access-restriction-warning.png)
+![Functions - access restrictions warning](/assets/azure-functions-private-site-access/access-restriction-warning.png)
 
 If you try to access the function app now, you should receive an HTTP 403 page indicating that the app is stopped. The app isn\'t really stopped. The response is actually a HTTP 403.6 - IP address rejected status. That makes sense, as the site is being accessed from outside the specified virtual network.
 
-![Root web app stopped](/assets/2020-01-21-azure-functions-private-site-access/root-web-app-stopped.png)
+![Root web app stopped](/assets/azure-functions-private-site-access/root-web-app-stopped.png)
 
 In order to access the site from the VM which was previously configured in the virtual network, connect to the VM via the Azure Bastion service.
 
-![Connect to VM via Azure Bastion](/assets/2020-01-21-azure-functions-private-site-access/connect-vm-bastion.png)
+![Connect to VM via Azure Bastion](/assets/azure-functions-private-site-access/connect-vm-bastion.png)
 
 From the web browser on the VM it is possible to access the site.
 
-![Root web app running](/assets/2020-01-21-azure-functions-private-site-access/root-web-app-running.png)
+![Root web app running](/assets/azure-functions-private-site-access/root-web-app-running.png)
 
 Fantastic! The function app isn't *really* stopped.
 
@@ -143,21 +145,21 @@ There are four basic steps in the quickstart tutorial for creating an Azure Func
 
 When publishing the function, select the Azure Function Consumption plan previously created. For this blog post, the Azure Function is deployed from my development laptop which is not connected to the virtual network used in this post. It is possible to do this because access restrictions where not configured for the SCM endpoint.
 
-![Visual Studio publish](/assets/2020-01-21-azure-functions-private-site-access/visual-studio-publish.png)
+![Visual Studio publish](/assets/azure-functions-private-site-access/visual-studio-publish.png)
 
 ## Invoke the Azure Function
 
 With the function deployed via Visual Studio, it's time to go back to the Azure Portal. There should now be a function, Function1, in the list of functions. You may notice a somewhat concerning error message indicating that the function runtime is unable to start. This isn't *really* true, as the function runtime is running, but the problem is that the Azure Portal, due to the access restrictions, isn't able to make the query to check the runtime.
 
-![Function app unable to start](/assets/2020-01-21-azure-functions-private-site-access/function-app-unable-to-start.png)
+![Function app unable to start](/assets/azure-functions-private-site-access/function-app-unable-to-start.png)
 
 In order to test access to the function, copy the function URL and try to invoke it from a web browser. Doing so from a local machine will result in a 403 web app is stopped message.
 
-![Function app stopped](/assets/2020-01-21-azure-functions-private-site-access/function-app-stopped.png)
+![Function app stopped](/assets/azure-functions-private-site-access/function-app-stopped.png)
 
 However, accessing the function via a web browser on the configured VM on the virtual network results in success!!
 
-![Function app running via Azure Bastion](/assets/2020-01-21-azure-functions-private-site-access/function-app-running-bastion.png)
+![Function app running via Azure Bastion](/assets/azure-functions-private-site-access/function-app-running-bastion.png)
 
 ## Summary
 

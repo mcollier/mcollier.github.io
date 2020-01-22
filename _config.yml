@@ -20,9 +20,11 @@
 
 title: Michael S. Collier's Blog
 email: ""
+tagline: A blog dedicated to sharing observations and learnings on the Microsoft Azure platform.
 description: >- # this means to ignore newlines until "baseurl:"
   Michael's personal blog. It's mine . . . all mine!
 show_excerpts: true
+excerpt_separator: "<!--more-->"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://mcollier.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: michaelcollier
@@ -33,7 +35,11 @@ theme: minima
 #theme: jekyll-theme-architect
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
   - jekyll-seo-tag
+
+#markdown: kramdown
+markdown: CommonMarkGhPages
 
 google_analytics: UA-156433646-1
 # Exclude from processing.
