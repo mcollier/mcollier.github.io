@@ -5,6 +5,7 @@ date:   2020-01-22 09:00:00 -0500
 categories: [azure-functions]
 description: A blog post demonstrating how to set up private site access with Azure Functions.
 tags: [azure-functions, networking, virtual-network, azure-bastion]
+comments: true
 ---
 
 This post will demonstrate how to create an [Azure Function with private site access](https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access). Private site access refers to a way for resources within a virtual network to reach out to an Azure Function.  Configuring private site access ensures that the specified Azure Function is not able to be triggered via the public internet. Instead, the function can only be accessed via a specific virtual network. The function is private to the specified virtual network.

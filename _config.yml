@@ -30,6 +30,9 @@ url: "https://mcollier.github.io" # the base hostname & protocol for your site, 
 twitter_username: michaelcollier
 github_username: mcollier
 
+disqus:
+  shortname:mcollier-blog
+
 # Build settings
 theme: minima
 #theme: jekyll-theme-architect
