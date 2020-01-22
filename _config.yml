@@ -31,7 +31,7 @@ twitter_username: michaelcollier
 github_username: mcollier
 
 disqus:
-  shortname:mcollier-blog
+  shortname: mcollier-blog
 
 # Build settings
 theme: minima
