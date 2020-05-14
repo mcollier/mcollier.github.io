@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://michaelscollier.com/</loc>
+    <lastmod>2020-05-14T00:04:10-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/post/</loc>
+    <lastmod>2020-05-14T00:04:10-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/my-new-blog-again/</loc>
+    <lastmod>2020-05-14T00:04:10-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://michaelscollier.com/azure-functions-private-site-access/</loc>
     <lastmod>2020-01-22T09:00:00-05:00</lastmod>
   </url>
@@ -28,17 +43,7 @@
   </url>
   
   <url>
-    <loc>https://michaelscollier.com/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://michaelscollier.com/tags/networking/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/post/</loc>
     <lastmod>2020-01-22T09:00:00-05:00</lastmod>
   </url>
   

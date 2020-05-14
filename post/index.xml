@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael S. Collier</copyright>
-    <lastBuildDate>Wed, 22 Jan 2020 09:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2020 00:04:10 -0400</lastBuildDate>
     
 	<atom:link href="https://michaelscollier.com/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Welcome to my new blog . . . again!</title>
+      <link>https://michaelscollier.com/my-new-blog-again/</link>
+      <pubDate>Thu, 14 May 2020 00:04:10 -0400</pubDate>
+      
+      <guid>https://michaelscollier.com/my-new-blog-again/</guid>
+      <description>Earlier this year I moved my blog to Jekyll. It was fun while it lasted. I&amp;rsquo;ve decided to give Hugo a try. The main reason is that I wanted something I could easily from either my Windows or Mac machines. I didn&amp;rsquo;t want to mess with installing or configuring Ruby gems.
+I&amp;rsquo;m giving Hugo a try. I expect to change the theme and make tweaks over the coming weeks.</description>
+    </item>
     
     <item>
       <title>Azure Functions Private Site Access</title>
