@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Azure Functions Private Site Access &middot; </title>
+        <meta name="description" content="A blog post demonstrating how to set up private site access with Azure Functions.">
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="generator" content="Hugo 0.70.0" />
+        <meta name="robots" content="index,follow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:title" content="Azure Functions Private Site Access">
+<meta property="og:description" content="A blog post demonstrating how to set up private site access with Azure Functions.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mcollier.github.io/azure-functions-private-site-access/">
+        <link rel="stylesheet" href="https://mcollier.github.iodist/site.css">
+        <link rel="stylesheet" href="https://mcollier.github.iodist/syntax.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,600,700,300&subset=latin,cyrillic-ext,latin-ext,cyrillic">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        
+        
+        
+        
+    </head>
+    <body>
+        
+
+        <div id="wrapper">
+            <header class="site-header">
+                <div class="container">
+                    <div class="site-title-wrapper">
+                        
+                            <h1 class="site-title">
+                                <a title="Michael S. Collier&#39;s Blog" href="https://mcollier.github.io">Michael S. Collier&#39;s Blog</a>
+                            </h1>
+                        
+                        <a class="button-square" href="https://mcollier.github.ioindex.xml"><i class="fa fa-rss"></i></a>
+                        
+                            <a class="button-square button-social hint--top" data-hint="Twitter" title="Twitter" href="https://twitter.com/michaelcollier" rel="me">
+                                <i class="fa fa-twitter"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                            <a class="button-square button-social hint--top" data-hint="Github" title="Github" href="https://github.com/mcollier" rel="me">
+                                <i class="fa fa-github-alt"></i>
+                            </a>
+                        
+                        
+                        
+                        
+                    </div>
+
+                    <ul class="site-nav">
+                        
+                    </ul>
+                </div>
+            </header>
+
+            <div id="container">
+
+
+<div class="container">
+    <article class="post-container" itemscope="" itemtype="http://schema.org/BlogPosting">
+        <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">Azure Functions Private Site Access</h1>
+    
+        <p class="post-description" itemprop="description">A blog post demonstrating how to set up private site access with Azure Functions.</p>
+    
+    <p class="post-date post-line">
+        <span>Published <time datetime="2020-01-22" itemprop="datePublished">Wed, Jan 22, 2020</time></span>
+        <span>by</span>
+        <span itemscope="" itemprop="author" itemtype="https://schema.org/Person">
+            <span itemprop="name">
+                <a href="#" itemprop="url" rel="author">Michael S. Collier</a>
+            </span>
+        </span>
+    </p>
+    
+</header>
+
+        <div class="post-content clearfix" itemprop="articleBody">
+    
+
+    <p>This post will demonstrate how to create an <a href="https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access">Azure Function with private site access</a>. Private site access refers to a way for resources within a virtual network to reach out to an Azure Function.  Configuring private site access ensures that the specified Azure Function is not able to be triggered via the public internet. Instead, the function can only be accessed via a specific virtual network. The function is private to the specified virtual network.</p>
+<p>If the Azure Function needs to reach in to a virtual network to interact with resources either in the virtual network or connected via <a href="https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview">service endpoints</a>, then virtual network integration is needed. This blog post focuses on the private site access. To view a tutorial on virtual network integration, please refer to <a href="https://docs.microsoft.com/azure/azure-functions/functions-create-vnet">https://docs.microsoft.com/azure/azure-functions/functions-create-vnet</a>.</p>
+<p>To learn more about Azure Functions networking options, please refer to <a href="https://docs.microsoft.com/azure/azure-functions/functions-networking-options">https://docs.microsoft.com/azure/azure-functions/functions-networking-options</a>.</p>
+<p>Over the course of this blog post, the following steps will be demonstrated in order to configure private site access for an Azure Function:</p>
+<ul>
+<li>Create a virtual network</li>
+<li>Create a virtual machine</li>
+<li>Create an Azure Bastion service</li>
+<li>Create an Azure Function App plan</li>
+<li>Configure a virtual network service endpoint</li>
+<li>Create and deploy an Azure Function</li>
+<li>Invoke the function from outside and within the virtual network</li>
+</ul>
+<p>The following diagram shows the high-level architecture of the solution to be created:</p>
+<p><img src="/images/azure-functions-private-site-access/architecture-overview.jpeg" alt="Architecture overview"></p>
+<h2 id="create-a-virtual-network">Create a Virtual Network</h2>
+<p>The first step is to create a new resource group, and then a new virtual network within the resource group. The virtual network will contain one subnet (with a name of &ldquo;default&rdquo;), and a new virtual machine within that subnet. The VM will be used to test invoking the function app. For the purposes of this blog post, the default virtual network settings will be sufficient.</p>
+<p><img src="/images/azure-functions-private-site-access/create-vnet.png" alt="Create a virtual network"></p>
+<p>With the virtual network, including a default subnet, in place, it is now time to put a resource in the virtual network. A new virtual machine will be created within the &ldquo;default&rdquo; subnet of the virtual network.</p>
+<h2 id="create-a-virtual-machine">Create a Virtual Machine</h2>
+<p>Next, create a new Windows Server 2019 Datacenter virtual machine via the Azure Portal. Microsoft provides a <a href="https://docs.microsoft.com/azure/virtual-machines/windows/quick-create-portal">quickstart on creating a VM</a> which outlines the basic steps for creating a VM. Below are a few additional details related to virtual network configuration, which isn't shown in the quickstart documentation.</p>
+<blockquote>
+<p>Note &ndash; I&rsquo;m using a Windows VM in this blog post, but a Linux VM could be used too. I&rsquo;m just more familiar with Windows.</p>
+</blockquote>
+<ol>
+<li>In the <strong>Basics</strong> tab, keep the default settings to keep things simple for this blog post.
+<img src="/images/azure-functions-private-site-access/create-vm-basics.png" alt="Create a VM - Basics"></li>
+<li>Leave the defaults in the <strong>Disk</strong> tab.</li>
+<li>In the <strong>Networking</strong> tab, select the previously created virtual network and subnet. For this blog post, one change to make from the defaults is to <em>not</em> have a public IP address. Remote access to the VM will be configured later via the Azure Bastion service. In many enterprises, this virtual network would often be connected to an on-premises network via Express Route or a site/point-to-site VPN connection.
+<img src="/images/azure-functions-private-site-access/create-vm-networking.png" alt="Create a VM - Networking"></li>
+<li>In the <strong>Management</strong> tab, leave most of the defaults in place. For the purposes of this blog, I&rsquo;ll change the auto-shutdown time to 6:00pm Eastern (as that is when I&rsquo;m normally done with my day).
+<img src="/images/azure-functions-private-site-access/create-vm-management.png" alt="Create a VM - Management"></li>
+<li>Leave the defaults in place for the <strong>Advanced</strong> and <strong>Tags</strong> tabs.</li>
+<li>On the <strong>Review + create</strong> tab, the platform will perform some basic validation. Assuming the validation completes without error, it&rsquo;s time to press the Create button. It&rsquo;ll take a few minutes for the VM to be created.</li>
+</ol>
+<h2 id="configure-azure-bastion">Configure Azure Bastion</h2>
+<p><a href="https://azure.microsoft.com/services/azure-bastion/">Azure Bastion</a> is a fully-managed Azure service which provides secure RDP and SSH access to virtual machines directly from the Azure Portal. For the purposes of this blog post, using the Azure Bastion service removes the need to configure a VM, and related virtual network settings, for RDP access. It&rsquo;s generally frowned upon to put a VM on the internet with a publicly discoverable RDP port. In fact, many organizations strictly prohibit doing so.</p>
+<p>To configure the Azure Bastion service, follow the instructions at <a href="https://docs.microsoft.com/azure/bastion/bastion-create-host-portal">https://docs.microsoft.com/azure/bastion/bastion-create-host-portal</a>.  Creating an Azure Bastion service is relatively straight-forward, as can be seen in the screenshot below.</p>
+<p><img src="/images/azure-functions-private-site-access/create-bastion.png" alt="Create Azure Bastion service"></p>
+<h2 id="create-an-azure-function-app">Create an Azure Function App</h2>
+<p>With the virtual network in place, the next step is to create an Azure Function App using a Consumption plan. The function code will be deployed to the Function App a bit later in this post.</p>
+<p>Step-by-step details for creating the function app is <a href="https://docs.microsoft.com/azure/azure-functions/functions-create-function-app-portal">detailed in official Microsoft documentation</a>, so I&rsquo;ll not repeat it
+all here. To summarize, the following is being created:</p>
+<ul>
+<li><strong>Plan</strong>: Azure Function Consumption plan</li>
+<li><strong>OS</strong>: Windows</li>
+<li><strong>Runtime</strong>: .NET Core</li>
+</ul>
+<p>It is also beneficial to create an Application Insights resource to go along with the Function App. Why? Because Application Insights makes it easy to see what&rsquo;s going on with the function. If something goes wrong, the logging via Application Insights is very helpful in diagnosing the problem.</p>
+<p>Below is screenshot of the configuration settings used.</p>
+<p><img src="/images/azure-functions-private-site-access/function-app-review-create.png" alt="Function App - Review and Create"></p>
+<p>With the function app in place, the next step is to configure access restrictions to ensure only resources on the virtual network can invoke the function.</p>
+<h2 id="configure-access-restrictions">Configure Access Restrictions</h2>
+<p><a href="https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access">Private site access</a> is enable by creating an Azure <a href="https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview">virtual network service endpoint</a> between the App Service plan (consumption) and the specified virtual network. Access restrictions are implemented via service endpoints. Service endpoints ensure that only traffic originating from within the specified virtual network can access the designated resource. In this case, the designed resource is the Azure Function.</p>
+<p>Within the function app, proceed to the <strong>Platform features</strong> tab. Note that in the screenshot below, while there is a function app, there are no functions.</p>
+<p><img src="/images/azure-functions-private-site-access/functions-platform-overview.png" alt="Functions - Platform Overview"></p>
+<p>Click on <strong>Networking</strong> to open the <strong>Network Feature Status</strong> section.  This page is the starting point to configure Azure Front Door, the Azure CDN, and also Access Restrictions. Private site access is configured via access restrictions. Click to <strong>Configure Access Restrictions</strong>.</p>
+<p><img src="/images/azure-functions-private-site-access/functions-network-feature-status.png" alt="Functions - Network Features Status"></p>
+<p>It can be seen on the Access Restrictions page that there are no restrictions in place. Well, there is a default which is to allow everything. For private site access, a new access restriction configuration needs to be created. Do so by first clicking on <strong>Add rule</strong>.</p>
+<p><img src="/images/azure-functions-private-site-access/functions-access-restrictions-default.png" alt="Functions - Default Access Restrictions"></p>
+<p>This will open new <strong>Add Access Restriction</strong> blade on the right side of the portal. The key configuration in this blade is to select <strong>Virtual Network</strong> from the Type drop-down selection box. Once Virtual Network is selected, select the desired virtual network and subnet.</p>
+<p><img src="/images/azure-functions-private-site-access/functions-add-access-restrictions.png" alt="Functions - Add Access Restrictions"></p>
+<p>Notice in the above screenshot the information block indicating a service endpoint has not yet been enabled for Microsoft.Web. The service endpoint will automatically be created. In my experience, enabling the service endpoint normally takes a few seconds, not 15 minutes . . . but it is good to have that buffer.</p>
+<p><img src="/images/azure-functions-private-site-access/add-service-endpoint-status-message.png" alt="Functions - Add service endpoint status message"></p>
+<p>The Access Restrictions page now shows that there is a new restriction.  It may take a few seconds for the Endpoint status to change from Provisioning to Enabled.</p>
+<p><img src="/images/azure-functions-private-site-access/functions-access-restrictions-rule.png" alt="Functions - Access Restrictions Rule"></p>
+<p>It is important to note that access restrictions have not been enabled on the <a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions#scm-site">SCM site</a>, private-site.scm.azurewebsites.net. By not enabling access restrictions the SCM site, it will be possible to deploy the Azure Function code from a local developer workstation or another build service without needing to take extra steps to provision an agent within the virtual network.</p>
+<p>Once the access restriction is in place, you will notice a warning at the top of the Azure Function app page - &quot;<em>Access restrictions have been added to your function app. This may affect your ability to manage it from the portal and make the runtime unreachable.&quot;</em> At first this may be a little worrisome, but it makes sense. A rule has been created which indicates the function(s) should not be accessible from the public internet, but only the designated virtual network.</p>
+<p><img src="/images/azure-functions-private-site-access/access-restriction-warning.png" alt="Functions - access restrictions warning"></p>
+<p>If you try to access the function app now, you should receive an HTTP 403 page indicating that the app is stopped. The app isn't really stopped. The response is actually a HTTP 403.6 - IP address rejected status. That makes sense, as the site is being accessed from outside the specified virtual network.</p>
+<p><img src="/images/azure-functions-private-site-access/root-web-app-stopped.png" alt="Root web app stopped"></p>
+<p>In order to access the site from the VM which was previously configured in the virtual network, connect to the VM via the Azure Bastion service.</p>
+<p><img src="/images/azure-functions-private-site-access/connect-vm-bastion.png" alt="Connect to VM via Azure Bastion"></p>
+<p>From the web browser on the VM it is possible to access the site.</p>
+<p><img src="/images/azure-functions-private-site-access/root-web-app-running.png" alt="Root web app running"></p>
+<p>Fantastic! The function app isn&rsquo;t <em>really</em> stopped.</p>
+<p>From the VM on the virtual network it is possible to access the default Azure Function site. The next step is to create an Azure Function and deploy it.</p>
+<p>It&rsquo;s important to note that while the function app is only accessible from within the designated virtual network, a public DNS entry remains.  As shown above, attempting to access the site will result in a HTTP 403 response.</p>
+<h2 id="create-an-azure-function">Create an Azure Function</h2>
+<p>For the purposes of this blog post, a basic Azure Function is created by following the steps <a href="https://docs.microsoft.com/azure/azure-functions/functions-create-your-first-function-visual-studio">Microsoft provides for a quickstart to create a C# function</a>. The quickstart tutorial creates a C# HTTP-triggered Azure Function. This results in an Azure Function that is accessed via a URL such as <a href="https://private-site.azurewebsites.net/api/Function1">https://private-site.azurewebsites.net/api/Function1</a>. Invoking the function via an HTTP GET or POST should result in a response of &ldquo;Hello, {name}&quot;.</p>
+<p>There are four basic steps in the quickstart tutorial for creating an Azure Function:</p>
+<ol>
+<li>Create a function app project</li>
+<li>Run locally</li>
+<li>Publish to Azure</li>
+<li>Test it</li>
+</ol>
+<p>When publishing the function, select the Azure Function Consumption plan previously created. For this blog post, the Azure Function is deployed from my development laptop which is not connected to the virtual network used in this post. It is possible to do this because access restrictions where not configured for the SCM endpoint.</p>
+<p><img src="/images/azure-functions-private-site-access/visual-studio-publish.png" alt="Visual Studio publish"></p>
+<h2 id="invoke-the-azure-function">Invoke the Azure Function</h2>
+<p>With the function deployed via Visual Studio, it&rsquo;s time to go back to the Azure Portal. There should now be a function, Function1, in the list of functions. You may notice a somewhat concerning error message indicating that the function runtime is unable to start. This isn&rsquo;t <em>really</em> true, as the function runtime is running, but the problem is that the Azure Portal, due to the access restrictions, isn&rsquo;t able to make the query to check the runtime.</p>
+<p><img src="/images/azure-functions-private-site-access/function-app-unable-to-start.png" alt="Function app unable to start"></p>
+<p>In order to test access to the function, copy the function URL and try to invoke it from a web browser. Doing so from a local machine will result in a 403 web app is stopped message.</p>
+<p><img src="/images/azure-functions-private-site-access/function-app-stopped.png" alt="Function app stopped"></p>
+<p>However, accessing the function via a web browser (by using the Azure Bastion service) on the configured VM on the virtual network results in success!!</p>
+<p><img src="/images//azure-functions-private-site-access/function-app-running-bastion.png" alt="Function app running via Azure Bastion"></p>
+<h2 id="summary">Summary</h2>
+<p>In order to restrict access to an Azure Function to a specified virtual network, it is necessary to configure access restrictions via a virtual network service endpoint. Doing so will ensure that only resources from within the specified virtual network can trigger the Azure Function.</p>
+<p>In this blog post, an Azure VM was used to demonstrate triggering the Azure Function. An alternative implementation could have easily been another Azure Function deployed to an Azure Function Premium plan with virtual network integration, or App Service Environment (ASE). The VM was used for simplicity in demonstrating the concept.</p>
+<p>Thanks to <a href="https://twitter.com/nzthiago">Thiago Almeida</a> and <a href="https://twitter.com/AlexKarcher">Alex Karcher</a> for their assistance in reviewing this blog post.</p>
+<h2 id="resources">Resources</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/azure/app-service/app-service-ip-restrictions">Azure App Service Access Restrictions</a></li>
+<li><a href="https://docs.microsoft.com/azure/azure-functions/functions-create-vnet">Integrate Azure Functions with a Virtual Network</a></li>
+<li><a href="https://docs.microsoft.com/azure/virtual-network/virtual-network-service-endpoints-overview">Virtual Network Service Endpoints</a></li>
+<li><a href="https://docs.microsoft.com/azure/app-service/environment/intro">Azure Application Service Environment</a></li>
+</ul>
+</div>
+
+        <footer class="post-footer clearfix">
+    
+        <p class="post-tags">
+            <span>Tagged:</span>
+            
+            
+                <a href="/tags/azure-functions/">azure-functions</a>, 
+            
+                <a href="/tags/networking/">networking</a>, 
+            
+                <a href="/tags/virtual-network/">virtual-network</a>, 
+            
+                <a href="/tags/azure-bastion/">azure-bastion</a>
+            
+        </p>
+    
+
+    <div class="share">
+        
+            <a class="icon-twitter" href="https://twitter.com/share?text=Azure%20Functions%20Private%20Site%20Access&url=https%3a%2f%2fmcollier.github.io%2fazure-functions-private-site-access%2f"
+                onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fa fa-twitter"></i>
+                <span class="hidden">Twitter</span>
+            </a>
+        
+
+        
+            <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmcollier.github.io%2fazure-functions-private-site-access%2f"
+                onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                <i class="fa fa-facebook"></i>
+                <span class="hidden">Facebook</span>
+            </a>
+        
+
+        
+            <a class="icon-google-plus" href="https://plus.google.com/share?url=https%3a%2f%2fmcollier.github.io%2fazure-functions-private-site-access%2f"
+              onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+              <i class="fa fa-google-plus"></i>
+                <span class="hidden">Google+</span>
+            </a>
+        
+        
+    </div>
+</footer>
+
+        
+    <div class="comments">
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "michaelscollier" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    </div>
+
+    </article>
+</div>
+
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="site-title-wrapper">
+                    <h1 class="site-title">
+                        <a title="Michael S. Collier&#39;s Blog" href="https://mcollier.github.io">Michael S. Collier&#39;s Blog</a>
+                    </h1>
+                    <a class="button-square button-jump-top js-jump-top" href="#">
+                        <i class="fa fa-angle-up"></i>
+                    </a>
+                </div>
+
+                <p class="footer-copyright">
+                    <span>&copy; 2020 / Powered by <a href="https://gohugo.io/">Hugo</a></span>
+                </p>
+                <p class="footer-copyright">
+                    <span><a href="https://github.com/roryg/ghostwriter">Ghostwriter theme</a> By <a href="http://jollygoodthemes.com">JollyGoodThemes</a></span>
+                    <span>/ <a href="https://github.com/jbub/ghostwriter">Ported</a> to Hugo By <a href="https://github.com/jbub">jbub</a></span>
+                </p>
+            </div>
+        </footer>
+
+        <script src="https://mcollier.github.iojs/jquery-1.11.3.min.js"></script>
+        <script src="https://mcollier.github.iojs/jquery.fitvids.js"></script>
+        <script src="https://mcollier.github.iojs/scripts.js"></script>
+    </body>
+</html>
+

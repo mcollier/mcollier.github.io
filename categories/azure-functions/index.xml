@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>azure-functions on Michael S. Collier&#39;s Blog</title>
+    <link>https://mcollier.github.io/categories/azure-functions/</link>
+    <description>Recent content in azure-functions on Michael S. Collier&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Michael S. Collier</copyright>
+    <lastBuildDate>Wed, 22 Jan 2020 09:00:00 -0500</lastBuildDate>
+    
+	<atom:link href="https://mcollier.github.io/categories/azure-functions/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Azure Functions Private Site Access</title>
+      <link>https://mcollier.github.io/azure-functions-private-site-access/</link>
+      <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
+      
+      <guid>https://mcollier.github.io/azure-functions-private-site-access/</guid>
+      <description>&lt;p&gt;This post will demonstrate how to create an &lt;a href=&#34;https://docs.microsoft.com/azure/azure-functions/functions-networking-options#private-site-access&#34;&gt;Azure Function with private site access&lt;/a&gt;. Private site access refers to a way for resources within a virtual network to reach out to an Azure Function.  Configuring private site access ensures that the specified Azure Function is not able to be triggered via the public internet. Instead, the function can only be accessed via a specific virtual network. The function is private to the specified virtual network.&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

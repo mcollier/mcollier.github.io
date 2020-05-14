@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Michael S. Collier&#39;s Blog</title>
+    <link>https://mcollier.github.io/tags/</link>
+    <description>Recent content in Tags on Michael S. Collier&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Michael S. Collier</copyright>
+    <lastBuildDate>Wed, 22 Jan 2020 09:00:00 -0500</lastBuildDate>
+    
+	<atom:link href="https://mcollier.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>azure-bastion</title>
+      <link>https://mcollier.github.io/tags/azure-bastion/</link>
+      <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
+      
+      <guid>https://mcollier.github.io/tags/azure-bastion/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>azure-functions</title>
+      <link>https://mcollier.github.io/tags/azure-functions/</link>
+      <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
+      
+      <guid>https://mcollier.github.io/tags/azure-functions/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>networking</title>
+      <link>https://mcollier.github.io/tags/networking/</link>
+      <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
+      
+      <guid>https://mcollier.github.io/tags/networking/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtual-network</title>
+      <link>https://mcollier.github.io/tags/virtual-network/</link>
+      <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
+      
+      <guid>https://mcollier.github.io/tags/virtual-network/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

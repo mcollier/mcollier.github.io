@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://mcollier.github.io/azure-functions-private-site-access/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/tags/azure-bastion/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/tags/azure-functions/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/categories/azure-functions/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/categories/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/tags/networking/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/post/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/tags/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/tags/virtual-network/</loc>
+    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/my-new-blog/</loc>
+    <lastmod>2020-01-16T20:45:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/page/about/</loc>
+    <lastmod>2015-04-03T02:13:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/page/contact/</loc>
+    <lastmod>2015-04-03T02:13:50+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://mcollier.github.io/page/</loc>
+    <lastmod>2015-04-03T02:13:50+00:00</lastmod>
+  </url>
+  
+</urlset>
