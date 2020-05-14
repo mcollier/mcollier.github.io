@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Michael S. Collier&#39;s Blog</title>
-    <link>https://mcollier.github.io/categories/</link>
+    <link>https://michaelscollier.com/categories/</link>
     <description>Recent content in Categories on Michael S. Collier&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael S. Collier</copyright>
     <lastBuildDate>Wed, 22 Jan 2020 09:00:00 -0500</lastBuildDate>
     
-	<atom:link href="https://mcollier.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://michaelscollier.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>azure-functions</title>
-      <link>https://mcollier.github.io/categories/azure-functions/</link>
+      <link>https://michaelscollier.com/categories/azure-functions/</link>
       <pubDate>Wed, 22 Jan 2020 09:00:00 -0500</pubDate>
       
-      <guid>https://mcollier.github.io/categories/azure-functions/</guid>
+      <guid>https://michaelscollier.com/categories/azure-functions/</guid>
       <description></description>
     </item>
     
