@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Michael S. Collier</copyright>
-    <lastBuildDate>Wed, 22 Jan 2020 09:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 15 May 2020 02:00:00 -0400</lastBuildDate>
     
 	<atom:link href="https://michaelscollier.com/tags/networking/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Azure Functions with Private Endpoints</title>
+      <link>https://michaelscollier.com/azure-functions-with-private-endpoints/</link>
+      <pubDate>Fri, 15 May 2020 02:00:00 -0400</pubDate>
+      
+      <guid>https://michaelscollier.com/azure-functions-with-private-endpoints/</guid>
+      <description>As enterprises continue to adopt serverless (and Platform-as-a-Service, or PaaS) solutions, they often need a way to integrate with existing resources on a virtual network. These existing resources could be databases, file storage, message queues or event streams, or REST APIs. In doing so, those interactions need to take place within the virtual network. Until relatively recently, combining serverless/PaaS offerings with traditional network access restrictions was complex, if not nearly impossible.</description>
+    </item>
     
     <item>
       <title>Azure Functions Private Site Access</title>

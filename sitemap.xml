@@ -3,13 +3,63 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://michaelscollier.com/azure-functions-with-private-endpoints/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/azure-bastion/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/azure-functions/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/categories/azure-functions/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/categories/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/cosmosdb/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://michaelscollier.com/</loc>
-    <lastmod>2020-05-14T00:04:10-04:00</lastmod>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/networking/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
   </url>
   
   <url>
     <loc>https://michaelscollier.com/post/</loc>
-    <lastmod>2020-05-14T00:04:10-04:00</lastmod>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/private-endpoints/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://michaelscollier.com/tags/virtual-network/</loc>
+    <lastmod>2020-05-15T02:00:00-04:00</lastmod>
   </url>
   
   <url>
@@ -19,41 +69,6 @@
   
   <url>
     <loc>https://michaelscollier.com/azure-functions-private-site-access/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/tags/azure-bastion/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/tags/azure-functions/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/categories/azure-functions/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/categories/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/tags/networking/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/tags/</loc>
-    <lastmod>2020-01-22T09:00:00-05:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://michaelscollier.com/tags/virtual-network/</loc>
     <lastmod>2020-01-22T09:00:00-05:00</lastmod>
   </url>
   
